@@ -1,0 +1,22 @@
+{
+    "name": "your-project-name",
+    "version": "1.0.0",
+    "description": "A web application with user registration, login, and password reset functionalities.",
+    "main": "main.js",
+    "scripts": {
+        "start": "node main.js"
+    },
+    "author": "Your Name",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.2",
+        "connect-sqlite3": "^0.9.15",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "express-flash": "^0.0.2",
+        "express-session": "^1.18.0",
+        "sqlite3": "^5.1.7"
+    },
+    "keywords": []
+}

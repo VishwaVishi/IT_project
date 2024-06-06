@@ -1,0 +1,162 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #2a3f54;
+    color: white;
+    padding: 5px 0; 
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    padding: 5px 10px; 
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+}
+
+nav ul li.active {
+    background-color: #1e2a38;
+    border-radius: 5px;
+}
+
+
+nav ul li a.logout-link {
+    color: white;
+    padding: 5px 10px; 
+    background-color: #e74c3c;
+    border-radius: 5px;
+}
+
+nav ul li a.logout-link:hover {
+    background-color: #c0392b;
+}
+
+main {
+    display: flex;
+    padding: 10px; 
+    flex-wrap: wrap; 
+}
+
+.table-section {
+    flex: 1 1 60%; 
+    margin-right: 10px; 
+}
+
+.table-section input {
+    width: 98%;
+    padding: 5px; 
+    margin-bottom: 8px; 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.8em; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8em; 
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 3px; 
+    text-align: left;
+}
+
+table th {
+    background-color: #34495e;
+    color: white;
+    text-transform: uppercase;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+table tbody tr:last-of-type {
+    border-bottom: 2px solid #34495e;
+}
+
+aside {
+    flex: 1 1 35%; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.book-details, .user-stats {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px; 
+    background-color: #f9f9f9;
+}
+
+.book-details h3, .user-stats h3 {
+    margin-top: 0;
+    font-size: 1em; 
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 5px; 
+    margin-top: 5px; 
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 1em; 
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.increase {
+    color: green;
+}
+
+.user-stats canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.table-section {
+    overflow-x: auto;
+}
+
+.book-details p, .user-stats p {
+    margin: 10px 0;
+    font-size: 0.9em; 
+}
+
+.book-details button, .user-stats button {
+    margin-top: 10px;
+    background-color: #3498db;
+}
+
+.book-details button:hover, .user-stats button:hover {
+    background-color: #2980b9;
+}

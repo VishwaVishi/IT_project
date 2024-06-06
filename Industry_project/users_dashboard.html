@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>Bookstore Inventory Management</li>
+                <li class="active">Library Management System</li>
+                <li>University Course Catalog System</li>
+                <li>Public Records Database</li>
+                <li><a href="/logout" class="logout-link">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="table-section">
+            <input type="text" id="searchInput" placeholder="Search in table">
+            <table id="booksTable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Book Title</th>
+                        <th>Author</th>
+                        <th>Publication Year</th>
+                        <th>Genre</th>
+                        <th>ISBN</th>
+                        <th>Publisher</th>
+                        <th>Availability</th>
+                        <th>Borrower Id</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Rows will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </section>
+        <aside>
+            <div class="book-details" id="bookDetails">
+                <h3>Book Details</h3>
+                <p><strong>Author:</strong></p>
+                <p><strong>Publication Year:</strong></p>
+                <p><strong>Publisher:</strong></p>
+                <button>Check Availability</button>
+                <button>Reserve Book</button>
+                <button>Save Changes</button>
+                <button id="downloadButton" style="display: none;">Download Book</button>
+            </div>
+            <div class="user-stats">
+                <h3>Number Of Active Users Over Time</h3>
+                <p><strong>Total Books:</strong> 145 <span class="increase">+19%</span></p>
+                <p><strong>Active Members:</strong> 128 <span class="increase">+13%</span></p>
+                <canvas id="userStatsChart"></canvas>
+            </div>
+        </aside>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/books')
+                .then(response => response.json())
+                .then(books => {
+                    renderTableRows(books);
+                });
+
+            const renderTableRows = (books) => {
+                const tableBody = document.getElementById('tableBody');
+                tableBody.innerHTML = '';  // Clear existing rows
+                books.forEach(book => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${book.id}</td>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td>${book.publication_year}</td>
+                        <td>${book.genre}</td>
+                        <td>${book.isbn}</td>
+                        <td>${book.publisher}</td>
+                        <td>${book.available}</td>
+                        <td>${book.borrower_id}</td>
+                        <td>${book.due_date}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            };
+
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function() {
+                const filter = searchInput.value.toLowerCase();
+                fetch('/books')
+                    .then(response => response.json())
+                    .then(books => {
+                        const filteredBooks = books.filter(book => 
+                            book.id.toString().includes(filter) ||
+                            book.title.toLowerCase().includes(filter) ||
+                            book.author.toLowerCase().includes(filter) ||
+                            book.publication_year.toString().includes(filter) ||
+                            book.genre.toLowerCase().includes(filter) ||
+                            book.isbn.toLowerCase().includes(filter) ||
+                            book.publisher.toLowerCase().includes(filter) ||
+                            book.available.toLowerCase().includes(filter) ||
+                            book.borrower_id.toString().includes(filter) ||
+                            book.due_date.toLowerCase().includes(filter)
+                        );
+                        renderTableRows(filteredBooks);
+                    });
+            });
+
+            const bookDetails = document.getElementById('bookDetails');
+            const downloadButton = document.getElementById('downloadButton');
+
+            const table = document.getElementById('booksTable');
+            table.addEventListener('click', function(event) {
+                const target = event.target;
+                if (target.tagName === 'TD') {
+                    const row = target.parentElement;
+                    const cells = row.getElementsByTagName('td');
+                    const bookTitle = cells[1].innerText;
+                    const author = cells[2].innerText;
+                    const publicationYear = cells[3].innerText;
+                    const publisher = cells[6].innerText;
+                    const availability = cells[7].innerText;
+
+                    bookDetails.querySelector('h3').innerText = bookTitle;
+                    bookDetails.querySelector('p:nth-child(2)').innerHTML = `<strong>Author:</strong> ${author}`;
+                    bookDetails.querySelector('p:nth-child(3)').innerHTML = `<strong>Publication Year:</strong> ${publicationYear}`;
+                    bookDetails.querySelector('p:nth-child(4)').innerHTML = `<strong>Publisher:</strong> ${publisher}`;
+
+                    if (availability === 'Yes') {
+                        downloadButton.style.display = 'block';
+                        downloadButton.onclick = function() {
+                            alert(`Downloading ${bookTitle}`);
+                            // Implement actual download logic here
+                        };
+                    } else {
+                        downloadButton.style.display = 'none';
+                    }
+                }
+            });
+
+            const ctx = document.getElementById('userStatsChart').getContext('2d');
+            const userStatsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jul 2022', 'Sep 2022', 'Nov 2022'],
+                    datasets: [{
+                        label: 'Active Users Per Month',
+                        data: [12, 11, 5, 3, 6],
+                        borderColor: 'blue',
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Number of Active Users'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
